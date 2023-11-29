@@ -5,7 +5,7 @@ from geopy.geocoders import Nominatim
 from streamlit_folium import folium_static
 
 # Load the data
-df = pd.read_csv('stationnement-velo-en-ile-de-france.csv', delimiter=';')
+df = pd.read_csv('ogmv\stationnement-velo-en-ile-de-france.csv', delimiter=';')
 
 # Geocoding function to get latitude and longitude from address
 def get_coordinates(address):
@@ -22,10 +22,11 @@ def create_map(lat, lon, data, radius=1, max_points=5):
     data['distance'] = data.apply(lambda row: haversine_distance(lat, lon, *map(float, row['geo_point_2d'].split(','))), axis=1)
     closest_points = data.sort_values(by='distance').head(max_points)
 
-    # Add markers for the closest points
+    # Add markers for the closest points with additional information
     for index, row in closest_points.iterrows():
         point_lat, point_lon = map(float, row['geo_point_2d'].split(','))
-        folium.Marker([point_lat, point_lon]).add_to(m)
+        popup_text = f"<br>Couvert: {row['couvert']}<br>Capacité {row['capacite']}<br>Acces: {row['acces']}<br>Payant: {row['payant']}<br>Surveiller: {row['surveille']}<br>Type: {row['type']}"
+        folium.Marker([point_lat, point_lon], popup=popup_text).add_to(m)
     return m
 
 # Haversine formula to calculate distance between two points on the earth
