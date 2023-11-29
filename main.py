@@ -5,48 +5,41 @@ from geopy.geocoders import Nominatim
 from streamlit_folium import folium_static
 
 # Load the data
-df = pd.read_csv(
-    'OGMV\stationnement-velo-en-ile-de-france.csv', delimiter=';')
+df = pd.read_csv('stationnement-velo-en-ile-de-france.csv', delimiter=';')
 
 # Geocoding function to get latitude and longitude from address
-
-
 def get_coordinates(address):
     geolocator = Nominatim(user_agent="geoapiExercises")
     location = geolocator.geocode(address)
     return location.latitude, location.longitude
 
 # Function to create map and load nearby points
+def create_map(lat, lon, data, radius=1, max_points=5):
+    # Create a map centered around the coordinates with a closer zoom
+    m = folium.Map(location=[lat, lon], zoom_start=16)
 
+    # Calculate distances and sort points
+    data['distance'] = data.apply(lambda row: haversine_distance(lat, lon, *map(float, row['geo_point_2d'].split(','))), axis=1)
+    closest_points = data.sort_values(by='distance').head(max_points)
 
-def create_map(lat, lon, data, radius=1):
-    # Create a map centered around the coordinates
-    m = folium.Map(location=[lat, lon], zoom_start=14)
-
-    # Add markers within the specified radius (in kilometers)
-    for index, row in data.iterrows():
+    # Add markers for the closest points
+    for index, row in closest_points.iterrows():
         point_lat, point_lon = map(float, row['geo_point_2d'].split(','))
-        if haversine_distance(lat, lon, point_lat, point_lon) <= radius:
-            folium.Marker([point_lat, point_lon]).add_to(m)
+        folium.Marker([point_lat, point_lon]).add_to(m)
     return m
 
 # Haversine formula to calculate distance between two points on the earth
-
-
 def haversine_distance(lat1, lon1, lat2, lon2):
     from math import radians, cos, sin, asin, sqrt
     R = 6371  # Radius of earth in kilometers
 
     dlat = radians(lat2 - lat1)
     dlon = radians(lon2 - lon1)
-    a = sin(dlat/2)**2 + cos(radians(lat1)) * \
-        cos(radians(lat2)) * sin(dlon/2)**2
+    a = sin(dlat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon/2)**2
     c = 2 * asin(sqrt(a))
     return R * c
 
 # Streamlit app
-
-
 def main():
     st.title("Bicycle Parking Locations Near You")
 
@@ -56,7 +49,6 @@ def main():
         lat, lon = get_coordinates(address)
         st_map = create_map(lat, lon, df)
         folium_static(st_map)
-
 
 if __name__ == "__main__":
     main()
