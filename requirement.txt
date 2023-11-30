@@ -3,3 +3,4 @@ pandas
 folium
 geopy
 streamlit-folium
+streamlit-folium==0.11.0

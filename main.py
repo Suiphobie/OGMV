@@ -67,32 +67,36 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     a = sin(dlat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon/2)**2
     c = 2 * asin(sqrt(a))
     return R * c
-
 # Streamlit app
 def main():
-    st.title("Où garer mon Velo")
+    st.sidebar.title("Où garer mon Velo - Controls")
 
-    # Address input at the top
-    address = st.text_input("Entrer une adresse en Île-de-France", key='address')
+    # Sidebar controls
+    address = st.sidebar.text_input("Entrer une adresse en Île-de-France", key='address')
+    radius = st.sidebar.slider("Rayon en Km (max 5km)", min_value=0.5, max_value=5.0, value=1.0, step=0.1, key='radius')
+    max_points = st.sidebar.number_input("Nombre d'abri à afficher (max 20)", min_value=1, max_value=20, value=5, step=1, key='max_points')
 
-    # Radius and max points selection
-    radius = st.slider("Sélectionnez un rayon en Km (max 5km)", min_value=0.5, max_value=5.0, value=1.0, step=0.1, key='radius')
-    max_points = st.number_input("Sélectionnez le nombre d'abri à afficher (max 20)", min_value=1, max_value=20, value=5, step=1, key='max_points')
+    couvert = st.sidebar.selectbox("Couvert?", ["", "OUI", "NON"], key='couvert')
+    acces = st.sidebar.selectbox("Acces?", ["", "clientele", "public", "privee"], key='acces')
+    payant = st.sidebar.selectbox("Payant?", ["", "OUI", "NON"], key='payant')
+    surveille = st.sidebar.selectbox("Surveiller?", ["", "OUI", "NON"], key='surveille')
+    types = st.sidebar.multiselect("Type?", ["abri", "ancrage", "arceaux", "autres", "batiment", "casier", "inconnu", "ratelier"], default=[], key='types')
 
-    # Filters below the map
-    couvert = st.selectbox("🛖 Couvert", ["", "OUI", "NON"], key='couvert')
-    acces = st.selectbox("🏛️Acces", ["", "clientele", "public", "privee"], key='acces')
-    payant = st.selectbox("💵Payant", ["", "OUI", "NON"], key='payant')
-    surveille = st.selectbox("👮Surveiller", ["", "OUI", "NON"], key='surveille')
-    types = st.multiselect("❓Type", ["abri", "ancrage", "arceaux", "autres", "batiment", "casier", "inconnu", "ratelier"], default=[], key='types')
-
+    # Main page content
+    st.title("Où garer mon Velo - Map")
     if address:
         lat, lon = get_coordinates(address)
-        # Call create_map with the user_location parameter
-        st_map = create_map(lat, lon, df, radius=radius, max_points=int(max_points), user_location=(lat, lon))
+        st_map = create_map(lat, lon, df, radius=radius, max_points=int(max_points))
         folium_static(st_map)
+
+    # Sidebar - Additional Information
+    st.sidebar.info("About the App: This app helps you find bicycle parking locations in Île-de-France.")
+    st.sidebar.text("Instructions: Enter an address, adjust the search radius and number of points, and apply filters as needed.")
+
+    # Optional: Sidebar - Contact or Feedback
+    st.sidebar.text("Contact: Your Contact Info")
+    feedback = st.sidebar.text_area("Feedback: Leave your comments here!")
 
 if __name__ == "__main__":
     main()
-
 
