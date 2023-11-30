@@ -93,7 +93,8 @@ def main():
         folium_static(st_map)
 
     # Sidebar - Additional Information
-    st.sidebar.info("Cette application utilise un jeu de données OpenData pour trouver les parkings à vélos les plus proches pour vous !")
+    st.sidebar.info("Cette application utilise un jeu de données Data.gouv pour trouver les parkings à vélos les plus proches pour vous ! "
+                    "[Retrouvez le jeu de données ici.](https://www.data.gouv.fr/fr/datasets/stationnement-velo-en-ile-de-france/#/resources)")
     st.sidebar.text("Réalisée par Anoussone Simuong et Jenny Lin dans le cadre du cours Open Data de l'ESD !")
 
 if __name__ == "__main__":
