@@ -9,7 +9,7 @@ df = pd.read_csv('stationnement-velo-en-ile-de-france.csv', delimiter=';')
 
 # Geocoding function to get latitude and longitude from address
 def get_coordinates(address):
-    geolocator = Nominatim(user_agent="geoapiExercises")
+    geolocator = Nominatim(user_agent="OGMVApps")
     location = geolocator.geocode(address)
     return location.latitude, location.longitude
 
