@@ -29,10 +29,10 @@ def filter_data(data, couvert, acces, payant, surveille, types):
 
 # Function to create map and load nearby points
 def create_map(lat, lon, data, radius=1, max_points=5, user_location=None):
-    # Create a map centered around the coordinates with a closer zoom
+    # Create a map centered around the coordinates 
     m = folium.Map(location=[lat, lon], zoom_start=20)
     
-    # Add a red marker for the user's location if it is provided
+    # Add a red marker for the user's location 
     if user_location:
         folium.Marker(
             user_location,
@@ -44,7 +44,7 @@ def create_map(lat, lon, data, radius=1, max_points=5, user_location=None):
     data['distance'] = data.apply(lambda row: haversine_distance(lat, lon, *map(float, row['geo_point_2d'].split(','))), axis=1)
     filtered_points = data[data['distance'] <= radius].sort_values(by='distance').head(max_points)
 
-    # Add markers for the filtered points with additional information and emoji
+    # Add markers for the filtered points 
     for index, row in filtered_points.iterrows():
         point_lat, point_lon = map(float, row['geo_point_2d'].split(','))
         popup_text = f"""
@@ -70,6 +70,9 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 # Streamlit app
 def main():
     st.sidebar.title("Où Garer Mon Vélo - Menu")
+    logo_path = "OGMVlogo.png"  
+    st.sidebar.image(logo_path, width=100) 
+
 
     # Sidebar controls
     address = st.sidebar.text_input("Entrer une adresse en Île-de-France", key='address')
