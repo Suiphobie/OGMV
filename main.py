@@ -89,7 +89,12 @@ def main():
     st.title("Où Garer Mon Vélo - Map")
     if address:
         lat, lon = get_coordinates(address)
-        st_map = create_map(lat, lon, df, radius=radius, max_points=int(max_points))
+        
+        # Apply the filters before creating the map
+        filtered_df = filter_data(df, couvert, acces, payant, surveille, types)
+        
+        # Create and display the map with the filtered data
+        st_map = create_map(lat, lon, filtered_df, radius=radius, max_points=int(max_points), user_location=(lat, lon))
         folium_static(st_map)
 
     # Sidebar - Additional Information
