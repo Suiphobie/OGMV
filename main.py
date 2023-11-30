@@ -5,7 +5,7 @@ from geopy.geocoders import Nominatim
 from streamlit_folium import folium_static
 
 # Load the data
-df = pd.read_csv('ogmv\stationnement-velo-en-ile-de-france.csv', delimiter=';')
+df = pd.read_csv('stationnement-velo-en-ile-de-france.csv', delimiter=';')
 
 # Geocoding function to get latitude and longitude from address
 def get_coordinates(address):
@@ -16,7 +16,7 @@ def get_coordinates(address):
 # Function to create map and load nearby points
 def create_map(lat, lon, data, radius=1, max_points=5):
     # Create a map centered around the coordinates with a closer zoom
-    m = folium.Map(location=[lat, lon], zoom_start=16)
+    m = folium.Map(location=[lat, lon], zoom_start=20)
 
     # Calculate distances and sort points
     data['distance'] = data.apply(lambda row: haversine_distance(lat, lon, *map(float, row['geo_point_2d'].split(','))), axis=1)
