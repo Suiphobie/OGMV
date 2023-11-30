@@ -69,6 +69,7 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return R * c
 # Streamlit app
 def main():
+    st.set_page_config(page_title="Où Garer Mon Vélo", layout="wide")
     st.sidebar.title("Où Garer Mon Vélo - Menu")
     logo_path = "OGMVlogo.png"  
     st.sidebar.image(logo_path, width=100) 
@@ -95,7 +96,7 @@ def main():
         
         # Create and display the map with the filtered data
         st_map = create_map(lat, lon, filtered_df, radius=radius, max_points=int(max_points), user_location=(lat, lon))
-        folium_static(st_map)
+        folium_static(st_map, width=1200, height=600)  # Adjust the width and height as needed
 
     # Sidebar - Additional Information
     st.sidebar.info("Cette application utilise un jeu de données Data.gouv pour trouver les parkings à vélos les plus proches pour vous ! "
