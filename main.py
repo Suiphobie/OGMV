@@ -49,9 +49,9 @@ def create_map(lat, lon, data, radius=1, max_points=5, user_location=None):
         point_lat, point_lon = map(float, row['geo_point_2d'].split(','))
         popup_text = f"""
         <b>🛖 Couvert:</b> {row['couvert']}<br>
-        <b>🔓 Acces:</b> {row['acces']}<br>
+        <b>🔓 Accès:</b> {row['acces']}<br>
         <b>💰 Payant:</b> {row['payant']}<br>
-        <b>👁️ Surveiller:</b> {row['surveille']}<br>
+        <b>👁️ Surveillé:</b> {row['surveille']}<br>
         <b>🅿️ Type:</b> {row['type']}
         """
         folium.Marker([point_lat, point_lon], popup=folium.Popup(popup_text, max_width=300)).add_to(m)
@@ -69,33 +69,29 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return R * c
 # Streamlit app
 def main():
-    st.sidebar.title("Où garer mon Velo - Controls")
+    st.sidebar.title("Où Garer Mon Vélo - Menu")
 
     # Sidebar controls
     address = st.sidebar.text_input("Entrer une adresse en Île-de-France", key='address')
     radius = st.sidebar.slider("Rayon en Km (max 5km)", min_value=0.5, max_value=5.0, value=1.0, step=0.1, key='radius')
     max_points = st.sidebar.number_input("Nombre d'abri à afficher (max 20)", min_value=1, max_value=20, value=5, step=1, key='max_points')
 
-    couvert = st.sidebar.selectbox("Couvert?", ["", "OUI", "NON"], key='couvert')
-    acces = st.sidebar.selectbox("Acces?", ["", "clientele", "public", "privee"], key='acces')
-    payant = st.sidebar.selectbox("Payant?", ["", "OUI", "NON"], key='payant')
-    surveille = st.sidebar.selectbox("Surveiller?", ["", "OUI", "NON"], key='surveille')
-    types = st.sidebar.multiselect("Type?", ["abri", "ancrage", "arceaux", "autres", "batiment", "casier", "inconnu", "ratelier"], default=[], key='types')
+    couvert = st.sidebar.selectbox("🛖 Couvert ?", ["", "OUI", "NON"], key='couvert')
+    acces = st.sidebar.selectbox("🔓 Accès ?", ["", "clientele", "public", "privee"], key='acces')
+    payant = st.sidebar.selectbox(" 💰Payant ?", ["", "OUI", "NON"], key='payant')
+    surveille = st.sidebar.selectbox("👁️ Surveillé ?", ["", "OUI", "NON"], key='surveille')
+    types = st.sidebar.multiselect("🅿️ Type ?", ["abri", "ancrage", "arceaux", "autres", "batiment", "casier", "inconnu", "ratelier"], default=[], key='types')
 
     # Main page content
-    st.title("Où garer mon Velo - Map")
+    st.title("Où Garer Mon Vélo - Map")
     if address:
         lat, lon = get_coordinates(address)
         st_map = create_map(lat, lon, df, radius=radius, max_points=int(max_points))
         folium_static(st_map)
 
     # Sidebar - Additional Information
-    st.sidebar.info("About the App: This app helps you find bicycle parking locations in Île-de-France.")
-    st.sidebar.text("Instructions: Enter an address, adjust the search radius and number of points, and apply filters as needed.")
-
-    # Optional: Sidebar - Contact or Feedback
-    st.sidebar.text("Contact: Your Contact Info")
-    feedback = st.sidebar.text_area("Feedback: Leave your comments here!")
+    st.sidebar.info("Cette application utilise un jeu de données OpenData pour trouver les parkings à vélos les plus proches pour vous !")
+    st.sidebar.text("Réalisée par Anoussone Simuong et Jenny Lin dans le cadre du cours Open Data de l'ESD !")
 
 if __name__ == "__main__":
     main()
