@@ -19,15 +19,15 @@
 Pour exécuter cette application localement, suivez ces étapes :
 
 1. Cloner le répertoire
-git clone (https://github.com/Suiphobie/OGMV
+git clone https://github.com/Suiphobie/OGMV
 
-2. Navigate to the app directory:
+2. Naviguer vers son dossier
 cd your-repo-name
 
-3. Install the required Python packages:
+3. Installer les packages : 
 pip install -r requirements.txt
 
-4. Run the app:
+4. Lancez l'app en local
 streamlit run main.py
 
 
@@ -40,10 +40,10 @@ streamlit run main.py
 - Geopy
 
 ## Source de données
-La data utiliser dans ce projet provient de  [Data.gouv.fr](https://www.data.gouv.fr/fr/datasets/stationnement-velo-en-ile-de-france/#/resources).
+La data utiliser dans ce projet provient de  [Data.gouv.fr](https://www.data.gouv.fr/fr/datasets/stationnement-velo-en-ile-de-france/#/resources)
 
 ## Auteurs
-Coder par [Anoussone Simuong](https://www.linkedin.com/in/anousimuong/))
+Coder par [Anoussone Simuong](https://www.linkedin.com/in/anousimuong/)
 Design par [Jenny Lin](https://www.linkedin.com/in/jenny%2Dlin%2Dxin%2Dru/) 
 
 ## Remerciements
