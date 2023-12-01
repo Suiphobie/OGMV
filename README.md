@@ -2,6 +2,8 @@
 
 "Où Garer Mon Vélo" est une application web Streamlit conçue pour aider les utilisateurs à trouver des emplacements de stationnement pour vélos dans la région Île-de-France. En utilisant les données de Data.gouv.fr, l'application fournit une interface facile à utiliser pour localiser les places de parking à proximité en fonction des adresses saisies par les utilisateurs.
 
+[Version Streamlit Cloud ici](https://suiphobie-ogmv-main-5gsszu.streamlit.app/)
+
 # Fonctionnalités
  - Carte Interactive : Visualisez les emplacements de stationnement pour vélos sur une carte interactive.
  - Fonctionnalité de Recherche : Les utilisateurs peuvent entrer une adresse pour trouver des emplacements de stationnement pour vélos à proximité.
